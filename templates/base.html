@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Цели и KPI</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}"/>
+    <link rel="stylesheet" href="{% static 'bootstrap.css' %}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body class="bg-dark text-light">
+<nav class="navbar navbar-expand-sm navbar-dark">
+    <a class="navbar-brand" href="#">
+        <img src="https://via.placeholder.com/40" alt="Logo" class="rounded-circle mb-0" width="30" height="30"/>
+    </a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="{% url 'metrics' %}">Эффективность</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'user_metrics' %}">Цели</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">KPI</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Задачи</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Сотрудники</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Админ</a></li>
+        </ul>
+        <div class="ml-auto d-flex align-items-center">
+            {% if user.profile_photo %}
+                <img src="{{ user.profile_photo.url }}" alt="User Photo" class="rounded-circle mr-2" width="30"
+                     height="30"/>
+            {% else %}
+                <img src="https://via.placeholder.com/40" alt="User Photo" class="rounded-circle mr-2" width="30"
+                     height="30"/>
+            {% endif %}
+            <div class="navbar-text">{{ user.name }} {{ user.second_name }}</div>
+        </div>
+    </div>
+</nav>
+    {% block content %}{% endblock %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

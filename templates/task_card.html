@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Цели и KPI</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}"/>
+    <link rel="stylesheet" href="{% static 'bootstrap.css' %}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body class="darkbg text-light">
+<div class="card mb-3">
+    <div class="card-body">
+        <h4 class="card-title">{{ task.title }}</h4>
+        <p class="card-text">{{ task.description }}</p>
+        <p class="card-text">
+            <span class="badge badge-info custom-badge">{{ task.get_status_display_name }}</span>
+        </p>
+        {% if task.creator %}
+            <div class="d-flex align-items-center mb-1">
+                <img src="{% if task.creator.profile_photo %}{{ task.creator.profile_photo.url }}{% else %}https://via.placeholder.com/40{% endif %}"
+                     alt="Employee Photo"
+                     class="rounded-circle border border-light employee-img"
+                     width="40"
+                     height="40">
+                <div class="ml-2">
+                    <div class="text">{{ task.creator }}</div>
+                    <div class="text-small small">Создано {{ task.creation_time }}</div>
+                </div>
+            </div>
+        {% else %}
+            <p class="card-text">Создатель отсутствует</p>
+        {% endif %}
+
+        {% if task.reviewer %}
+            <div class="d-flex align-items-center mb-1">
+                <img src="
+                        {% if task.reviewer.profile_photo %}{{ task.reviewer.profile_photo.url }}{% else %}https://via.placeholder.com/40{% endif %}"
+                     alt="Employee Photo"
+                     class="rounded-circle border border-light employee-img"
+                     width="40"
+                     height="40">
+                <div class="ml-2">
+                    <div class="text">{{ task.reviewer }}</div>
+                    {% if task.status == 'reviewing' %}
+                        <div class="text-small small">Согласуется с {{ task.review_time }}</div>
+                    {% else %}
+                        <div class="text-small small">Согласовано {{ task.review_time }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        {% else %}
+            <p class="card-text mt-2 m-0">Согласующий не назначен</p>
+        {% endif %}
+
+        {% if task.assigner %}
+            <div class="d-flex align-items-center mb-1">
+                <img src="
+                        {% if task.assigner.profile_photo %}{{ task.assigner.profile_photo.url }}{% else %}https://via.placeholder.com/40{% endif %}"
+                     alt="Employee Photo"
+                     class="rounded-circle border border-light employee-img"
+                     width="40"
+                     height="40">
+                <div class="ml-2">
+                    <div class="text">{{ task.assigner }}</div>
+                    {% if task.assign_time and task.status == 'assigning' or 'in_work' or 'completed' %}
+                        <div class="text-small small">Утверждено {{ task.assign_time }}</div>
+                    {% elif task.status == 'assigning' %}
+                        <div class="text-small small">На утверждении с {{ task.assign_time }}</div>
+                    {% else %}
+                        <div class="text-small small">Утверждающий</div>
+                    {% endif %}
+                </div>
+            </div>
+        {% else %}
+            <p class="card-text mt-1 mb-1">Утверждающий не назначен</p>
+        {% endif %}
+
+        {% if task.taskemployee_set.all.count > 0 %}
+            <h5 class="mt-2">Участники</h5>
+            <ul class="list-unstyled d-flex flex-wrap contributors-card ml-2 mb-0">
+                {% for task_employee in task.taskemployee_set.all %}
+                    <li class="employee-photo">
+                        <img src="
+                                {% if task_employee.user.profile_photo %}{{ task_employee.user.profile_photo.url }}{% else %}https://via.placeholder.com/40{% endif %}"
+                             alt="Employee Photo"
+                             class="rounded-circle border border-light employee-img"
+                             width="40"
+                             height="40"
+                             data-toggle="tooltip"
+                             title="{{ task_employee.user.name }} {{ task_employee.user.second_name }}">
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="no-participants mt-0">Нет участников</div>
+        {% endif %}
+    </div>
+    <div class="d-flex flex-wrap justify-content-between m-1">
+{#        {% if employee_department.can_assign and task.status == 'assigning' %}#}
+            <button class="btn btn-icon btn-info flex-grow-1 m-1" style="flex: 1 1 120px;"
+                    data-bs-toggle="tooltip" title="Утвердить">
+                <i class="fas fa-thumbs-up"></i> Утвердить
+            </button>
+{#        {% endif %}#}
+{#        {% if employee_department.can_review and task.status == 'reviewing' %}#}
+            <button class="btn btn-icon btn-info flex-grow-1 m-1" style="flex: 1 1 120px;"
+                    data-bs-toggle="tooltip" title="Согласовать">
+                <i class="fas fa-check"></i> Согласовать
+            </button>
+{#        {% endif %}#}
+{#        {% if employee_department.can_assign_executors and task.status != 'in_work' and task.status == 'completed' %}#}
+            <button class="btn btn-icon btn-info flex-grow-1 m-1" style="flex: 1 1 120px;"
+                    data-bs-toggle="tooltip" title="Выбрать исполнителей">
+                <i class="fas fa-users"></i> Исполнители
+            </button>
+{#        {% endif %}#}
+{#        {% if employee_department.can_delete %}#}
+            <button class="btn btn-icon btn-info flex-grow-1 m-1" style="flex: 1 1 120px;"
+                    data-bs-toggle="tooltip" title="Скрыть">
+                <i class="fas fa-trash-alt"></i> Скрыть
+            </button>
+{#        {% endif %}#}
+{#        {% if task.status == 'assigning' %}#}
+            <button class="btn btn-icon btn-info flex-grow-1 m-1" style="flex: 1 1 120px;"
+                    data-bs-toggle="tooltip" title="Изменить">
+                <i class="fas fa-edit"></i> Изменить
+            </button>
+{#        {% endif %}#}
+{#        {% if task.creator == user and task.status == 'created' %}#}
+            <button class="btn btn-icon btn-info flex-grow-1 m-1" style="flex: 1 1 120px;"
+                    data-bs-toggle="tooltip" title="В черновики">
+                <i class="fas fa-undo-alt"></i> В черновики
+            </button>
+{#        {% endif %}#}
+{#        {% if employee_department.can_assign_metrics and task.status == 'reviewing' %}#}
+            <button class="btn btn-icon btn-info flex-grow-1 m-1" style="flex: 1 1 120px;"
+                    data-bs-toggle="tooltip" title="Указать метрики">
+                <i class="fas fa-chart-line"></i> Метрики
+            </button>
+{#        {% endif %}#}
+{#        {% if user.can_return_to_work %}#}
+            <button class="btn btn-icon btn-info flex-grow-1 m-1" style="flex: 1 1 120px;"
+                    data-bs-toggle="tooltip" title="Вернуть в работу">
+                <i class="fas fa-undo"></i> Вернуть
+            </button>
+{#        {% endif %}#}
+{#        {% if employee_department.can_return_to_review %}#}
+            <button class="btn btn-icon btn-info flex-grow-1 m-1" style="flex: 1 1 120px;"
+                    data-bs-toggle="tooltip" title="Вернуть на согласование">
+                <i class="fas fa-share"></i> Вернуть
+            </button>
+{#        {% endif %}#}
+    </div>
+</div>
+</body>
+</html>

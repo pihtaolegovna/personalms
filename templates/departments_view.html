@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center">Список отделов</h1>
+        <div class="row">
+            {% for department in departments %}
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-dark text-light">
+                        <div class="card-header">
+                            <h5 class="card-title">{{ department.name }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text"><strong>ID:</strong> {{ department.department_id }}</p>
+                            <p class="card-text"><strong>Уровень:</strong> {{ department.level }}</p>
+                            <p class="card-text"><strong>Головной Отдел:</strong>
+                                {% if department.head_department %}
+                                    {{ department.head_department.name }}
+                                {% else %}
+                                    Нет
+                                {% endif %}
+                            </p>
+                            <p class="card-text">
+                                <strong>Статус:</strong> {{ department.is_hidden|yesno:"Скрыт,Активен" }}
+                            </p>
+
+                            <h6>Сотрудники:</h6>
+                            <ul>
+                                {% for employee_department in department.employeedepartment_set.all %}
+                                    <li>
+                                        {% if not employee_department.user.is_hidden %}
+                                            {{ employee_department.user.name }} {{ employee_department.user.second_name }}
+                                        {% endif %}
+                                    </li>
+                                {% empty %}
+                                    <li>Нет сотрудников</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="card-footer text-center">
+                            <a href="{% url 'department_tasks' department.department_id %}" class="btn btn-info">Перейти к задачам</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

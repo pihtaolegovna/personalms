@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <span class="navbar-brand">
+            <a href="{% url 'departments_view' %}" class="text-light">Компания</a>
+            <span class="text-light">&nbsp;&rarr;&nbsp;</span>
+            <a href="#" class="text-light">Отдел</a>
+        </span>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createTaskModal"
+            data-department-id="{{ department.id }}">
+        Создать Задачу
+    </button>
+</nav>
+
+<div class="container-lg mt-4 m-3">
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+            <h5>Черновики</h5>
+            {% for task in tasks %}
+                {% if task.status == 'draft' %}
+                    {% include 'task_card.html' with task=task badge_class='info' creator=task.creator reviewer=task.reviewer assigner=task.assigner %}
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+            <h5>Согласование</h5>
+            {% for task in tasks %}
+                {% if task.status in 'assigning reviewing created' %}
+                    {% include 'task_card.html' with task=task badge_class='info' creator=task.creator reviewer=task.reviewer assigner=task.assigner %}
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+            <h5>Выполняется</h5>
+            {% for task in tasks %}
+                {% if task.status == 'in_work' %}
+                    {% include 'task_card.html' with task=task badge_class='warning' creator=task.creator reviewer=task.reviewer assigner=task.assigner %}
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+            <h5>Завершенные</h5>
+            {% for task in tasks %}
+                {% if task.status == 'completed' %}
+                    {% include 'task_card.html' with task=task badge_class='success' creator=task.creator reviewer=task.reviewer assigner=task.assigner %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+    </script>
+{% endblock %}

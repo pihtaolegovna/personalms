@@ -1,0 +1,122 @@
+.card-body, .card {
+    background: rgb(85, 85, 85);
+}
+
+.card {
+  border-radius: 10px;
+  border: 25px black;
+  overflow: hidden;
+  background: rgb(85, 85, 85) !important;
+
+}
+
+.employee-info-list {
+    display: flex; /* Make the list a flex container */
+    flex-wrap: wrap; /* Allow images to wrap onto the next line */
+    align-items: center; /* Center images vertically */
+}
+
+.employee-photo {
+    margin-left: -10px; /* Adjust to lean the images */
+    transition: transform 0.3s ease; /* Smooth animation */
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.darkbg {
+  background-color: rgb(34, 34, 34);
+}
+
+.text {
+    color: white !important;
+}
+
+
+.navbar-dark {
+  background-color: rgb(51, 51, 51) !important;
+}
+
+.employee-photo img {
+    width: 40px; /* Maintain image size */
+    height: 40px; /* Maintain image size */
+    border-radius: 50%; /* Keep images rounded */
+    border: 2px solid white; /* Add a border for better visibility */
+    transition: transform 0.3s ease; /* Add transition for scaling */
+}
+
+
+
+.btn-link {
+    width: 100px;
+    border: none;
+    padding: 0;
+    color: inherit; /* Inherit color from parent */
+    font-size: 1.5rem;
+}
+
+.icon-hover {
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Hover effect to add shadow */
+.btn-link:hover .icon-hover {
+    filter: drop-shadow(0 4px 8px rgba(0, 123, 255, 0.5)); /* Bootstrap info color shadow */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+
+.custom-badge {
+    font-size: 1.1rem; /* Increase font size */
+    padding: 0.4rem 0.8rem; /* Increase padding for better appearance */
+    border-radius: 20px; /* More rounded corners for a pill shape */
+}
+
+.employee-photo {
+    margin-right: 0.5rem; /* Space between employee photos */
+}
+
+.employee-img {
+    transition: transform 0.3s ease; /* Smooth scaling */
+}
+
+.employee-img:hover {
+    transform: scale(1.1); /* Scale up on hover */
+}
+
+.employee-photo {
+    margin-right: 0.5rem; /* Space between employee photos */
+}
+
+.employee-img {
+    transition: transform 0.3s ease; /* Smooth scaling */
+}
+
+.employee-img:hover {
+    transform: scale(1.1); /* Scale up on hover */
+}
+
+.custom-badge {
+    font-size: 0.7rem; /* Increase font size */
+    padding: 0.5rem 1rem; /* Increase padding */
+    border-radius: 1rem; /* Adjust border radius for a pill shape */
+}
+
+
+/* Scale neighboring images down when hovering over a specific image */
+.employee-photo:hover {
+    z-index: 1; /* Bring the hovered image to the front */
+    transform:  translateX(10px);
+}
+
+.employee-photo:hover ~ .employee-photo img,
+.employee-photo:hover + .employee-photo img {
+    transform: scale(0.5); /* Scale down neighboring images */
+}
+
+/* Also apply to previous sibling (for left-side neighbors) */
+.employee-photo:hover ~ .employee-photo img {
+    transform:  translateX(20px); /* Scale down neighbors on the right */
+}
+
+.employee-photo:hover img {
+    transform: scale(1.1) translateY(-5px); /* Slightly enlarge on hover */
+}

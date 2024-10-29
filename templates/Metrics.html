@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Метрики задач пользователей</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}"/>
+    <link rel="stylesheet" href="{% static 'bootstrap.css' %}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body class="darkbg text-light">
+<div class="container mt-5">
+    <h1 class="mb-4">Метрики по дням</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Дата</th>
+                <th scope="col">Пользователь</th>
+                <th scope="col">Метрика</th>
+                <th scope="col">Множитель</th>
+                <th scope="col">Общая стоимость</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for metric in daily_metrics %}
+            <tr>
+                <td>{{ metric.measurement_date__date }}</td>
+                <td>{{ metric.user__name }} {{ metric.user__second_name }}</td>
+                <td>{{ metric.kpi_metric__metric_name }}</td>
+                <td>{{ metric.multiplier }}</td>
+                <td>{{ metric.total_value }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="6">Итого:</th>
+                <th>{{ total_value }}</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+</body>
+</html>

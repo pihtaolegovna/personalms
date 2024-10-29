@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Метрики задач пользователей</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}"/>
+    <link rel="stylesheet" href="{% static 'bootstrap.css' %}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body class="darkbg text-light">
+<div class="container my-4">
+    <h1 class="text-center mb-4">Метрики задач пользователей</h1>
+    {% for metric in metrics %}
+    <div class="card mb-3 bg-dark">
+        <div class="card-header">
+            <h5 class="mb-0">Метрики для {{ metric.user }}</h5>
+        </div>
+        <div class="card-body">
+            <h6 class="card-title">Общие метрики</h6>
+            <p class="card-text">Общее время на задачах: <strong>{{ metric.total_time_hours }}</strong> часов</p>
+            <p class="card-text">Количество завершенных задач: <strong>{{ metric.completed_tasks_count }}</strong></p>
+
+            <h6 class="card-title">Временные метрики</h6>
+            <p class="card-text">Среднее время выполнения задачи: <strong>{{ metric.average_task_completion_time }}</strong> часов</p>
+            <p class="card-text">Минимальное время выполнения задачи: <strong>{{ metric.min_task_completion_time }}</strong> часов</p>
+            <p class="card-text">Максимальное время выполнения задачи: <strong>{{ metric.max_task_completion_time }}</strong> часов</p>
+
+            <h6 class="card-title">Процентные метрики</h6>
+            <p class="card-text">Процент завершенных задач: <strong>{{ metric.completed_task_percentage }}%</strong></p>
+            <p class="card-text">Общая эффективность выполнения задач: <strong>{{ metric.task_efficiency }}%</strong></p>
+            <p class="card-text">Количество задач с высоким приоритетом: <strong>{{ metric.high_priority_tasks_count }}</strong></p>
+            <p class="card-text">Количество пересмотра задач: <strong>{{ metric.task_revisions_count }}</strong></p>
+        </div>
+    </div>
+    {% empty %}
+    <div class="alert alert-warning">Нет доступных метрик.</div>
+    {% endfor %}
+</div>
+</body>
+</html>
